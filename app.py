@@ -178,7 +178,6 @@ def calcular_metricas_periodo(df: pd.DataFrame) -> tuple:
     if df.empty:
         return 1.0, 0.0, 0.0, 0, 0.0
 
-    df = df.copy()
     fator_periodo = df["Fator_Interno"].prod()
     inflacao_acumulada_periodo = (fator_periodo - 1) * 100
 
