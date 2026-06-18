@@ -77,7 +77,7 @@ def _limpar_e_converter_tipos(df: pd.DataFrame) -> pd.DataFrame:
     """
     # Conversão de tipos e tratamento de valores nulos
     df["Inflacao_Mensal"] = pd.to_numeric(
-        df["Inflacao_Mensal"].str.replace(",", "."), errors="coerce"
+        df["Inflacao_Mensal"].str.replace(",", ".", regex=False), errors="coerce"
     )
     # Se houver algum nulo na inflação, removemos a linha correspondente
     if df["Inflacao_Mensal"].isnull().any():
@@ -173,9 +173,9 @@ def _agregar_e_calcular_fatores(df: pd.DataFrame) -> pd.DataFrame:
     # Arredondamentos finais para gravação limpa no CSV
     df_resumo["Media_Mensal"] = df_resumo["Media_Mensal"].round(2)
     df_resumo["Acumulado_Ano"] = df_resumo["Acumulado_Ano"].round(2)
-    df_resumo["Fator_Composto_Acumulado"] = df_resumo[
-        "Fator_Composto_Acumulado"
-    ].round(4)
+    df_resumo["Fator_Composto_Acumulado"] = df_resumo["Fator_Composto_Acumulado"].round(
+        4
+    )
     df_resumo["Inflacao_Composta_Acumulada_Perc"] = df_resumo[
         "Inflacao_Composta_Acumulada_Perc"
     ].round(2)
@@ -236,6 +236,7 @@ def processar_dados_ipca(
 
 if __name__ == "__main__":
     import sys
+
     try:
         processar_dados_ipca()
         sys.exit(0)
