@@ -103,26 +103,9 @@ def _limpar_e_converter_tipos(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-def _agregar_e_calcular_fatores(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Calcula o acumulado anual, filtra anos incompletos, seleciona os últimos 10 anos,
-    e computa o fator composto acumulado.
 
-    Args:
-        df (pd.DataFrame): DataFrame limpo e ordenado.
-
-    Returns:
-        pd.DataFrame: DataFrame de resumo anual contendo as colunas finais calculadas.
-
-    Raises:
-        ValueError: Se nenhum ano completo com 12 meses for encontrado.
-    """
-    # Fator de inflação: (1 + variação_mensal / 100)
-    df["Fator"] = 1 + (df["Inflacao_Mensal"] / 100)
-
-    logger.info("Realizando consolidação anual e cálculo de fatores compostos...")
-
-    # Filtra anos incompletos de forma vetorizada
+def _filtrar_anos_completos(df: pd.DataFrame) -> pd.DataFrame:
+    """Filtra o DataFrame mantendo apenas os anos que possuem 12 meses de dados."""
     counts = df.groupby("Ano")["Codigo_Mes"].transform("count")
     anos_ignorados = df[counts != 12]["Ano"].unique()
 
@@ -131,11 +114,14 @@ def _agregar_e_calcular_fatores(df: pd.DataFrame) -> pd.DataFrame:
             f"Anos ignorados por conterem dados incompletos: {list(anos_ignorados)}"
         )
 
-    df_valido = df[counts == 12]
+    return df[counts == 12]
 
+
+def _calcular_resumo_anual(df: pd.DataFrame) -> pd.DataFrame:
+    """Realiza agregação anual, calcula médias e fator acumulado do ano."""
     # Agregação vetorizada
     df_resumo = (
-        df_valido.groupby("Ano")
+        df.groupby("Ano")
         .agg(Media_Mensal=("Inflacao_Mensal", "mean"), Fator_Prod=("Fator", "prod"))
         .reset_index()
     )
@@ -156,6 +142,11 @@ def _agregar_e_calcular_fatores(df: pd.DataFrame) -> pd.DataFrame:
     # Ordena por ano
     df_resumo = df_resumo.sort_values("Ano").reset_index(drop=True)
 
+    return df_resumo
+
+
+def _calcular_fator_composto(df_resumo: pd.DataFrame) -> pd.DataFrame:
+    """Seleciona os últimos 10 anos e calcula a inflação composta acumulada."""
     # Filtra estritamente os últimos 10 anos cheios disponíveis
     df_resumo = df_resumo.tail(10).reset_index(drop=True)
 
@@ -184,6 +175,32 @@ def _agregar_e_calcular_fatores(df: pd.DataFrame) -> pd.DataFrame:
     df_resumo = df_resumo.drop(columns=["Fator_Anual"])
 
     return df_resumo
+
+
+def _agregar_e_calcular_fatores(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Calcula o acumulado anual, filtra anos incompletos, seleciona os últimos 10 anos,
+    e computa o fator composto acumulado.
+
+    Args:
+        df (pd.DataFrame): DataFrame limpo e ordenado.
+
+    Returns:
+        pd.DataFrame: DataFrame de resumo anual contendo as colunas finais calculadas.
+
+    Raises:
+        ValueError: Se nenhum ano completo com 12 meses for encontrado.
+    """
+    # Fator de inflação: (1 + variação_mensal / 100)
+    df["Fator"] = 1 + (df["Inflacao_Mensal"] / 100)
+
+    logger.info("Realizando consolidação anual e cálculo de fatores compostos...")
+
+    df_valido = _filtrar_anos_completos(df)
+    df_resumo = _calcular_resumo_anual(df_valido)
+    df_final = _calcular_fator_composto(df_resumo)
+
+    return df_final
 
 
 def _salvar_dados_processados(df_resumo: pd.DataFrame, caminho_limpo: str) -> None:
