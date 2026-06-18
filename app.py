@@ -164,7 +164,6 @@ if not df_ipca.empty:
     df_ipca["Fator_Interno"] = 1 + (df_ipca["Acumulado_Ano"] / 100)
 
 
-@st.cache_data
 def calcular_metricas_periodo(df: pd.DataFrame) -> tuple:
     """
     Calcula as métricas agregadas para o período selecionado de forma performática.
