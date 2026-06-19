@@ -1,4 +1,5 @@
 # flake8: noqa: E501
+from typing import Callable, Any
 import os
 import logging
 import pandas as pd
@@ -151,6 +152,23 @@ def _executar_chamada_api_ibge(
     return df_raw
 
 
+def _executar_com_fallback(
+    funcao_principal: Callable[[], Any],
+    funcao_fallback: Callable[[], Any],
+    excecoes_esperadas: tuple[type[Exception], ...] = (Exception,),
+) -> Any:
+    """
+    Executa a função principal; em caso de falha esperada, aciona o fallback.
+    """
+    try:
+        return funcao_principal()
+    except excecoes_esperadas as e:
+        logger.warning(
+            f"Erro na execução da API. Iniciando fallback robusto com dados locais pré-processados. Erro: {e}"
+        )
+        return funcao_fallback()
+
+
 def extrair_dados_ipca(
     tabela: str = "1737",
     variavel: str = "63",
@@ -172,37 +190,25 @@ def extrair_dados_ipca(
     Returns:
         pd.DataFrame: DataFrame contendo a tabela bruta (via API ou via fallback).
     """
-    try:
-        logger.info(
-            f"Tentando extração da tabela {tabela}, variável {variavel} para o período {periodo}..."
-        )
-        df_raw = _executar_chamada_api_ibge(
+    logger.info(
+        f"Tentando extração da tabela {tabela}, variável {variavel} para o período {periodo}..."
+    )
+    return _executar_com_fallback(
+        funcao_principal=lambda: _executar_chamada_api_ibge(
             tabela=tabela,
             variavel=variavel,
             periodo=periodo,
             nivel_territorial=nivel_territorial,
             codigo_territorial=codigo_territorial,
-        )
-        logger.info("Extração de dados brutos via API concluída com sucesso.")
-        return df_raw
-
-    except (
-        requests.exceptions.RequestException,
-        json.decoder.JSONDecodeError,
-        RetryError,
-        ValueError,
-    ) as e:
-        logger.warning(
-            f"Erro de rede, decodificação ou validação na API do IBGE: {e}. "
-            f"Iniciando fallback robusto com dados locais pré-processados."
-        )
-        return obter_dados_fallback(periodo=periodo)
-    except Exception as e:
-        logger.warning(
-            f"Erro inesperado na requisição à API do IBGE: {e}. "
-            f"Iniciando fallback robusto com dados locais pré-processados."
-        )
-        return obter_dados_fallback(periodo=periodo)
+        ),
+        funcao_fallback=lambda: obter_dados_fallback(periodo=periodo),
+        excecoes_esperadas=(
+            requests.exceptions.RequestException,
+            json.decoder.JSONDecodeError,
+            RetryError,
+            ValueError,
+        ),
+    )
 
 
 def salvar_dados_brutos(
@@ -234,6 +240,7 @@ def salvar_dados_brutos(
 
 if __name__ == "__main__":
     import sys
+
     try:
         dados = extrair_dados_ipca()
         salvar_dados_brutos(dados)
