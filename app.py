@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
-import html
 
 
 # Constantes globais para otimização de performance
@@ -17,20 +16,18 @@ OPCOES_EXEMPLO = list(VALORES_EXEMPLO.keys())
 
 
 INTRODUCAO_MD = """Quando falamos sobre a variação da inflação (IPCA), estamos olhando para a forma como o dinheiro que ganhamos perde poder de compra ao longo do tempo. Este painel foi construído de forma acadêmica para nos ajudar a compreender como a inflação se comportou ano a ano e o efeito cumulativo composto desse aumento no bolso do brasileiro."""
-SIMULADOR_MD = """<div class='simulador-card'>
-<p style='margin-top:0; color:#f3f4f6; font-size:1rem; font-weight:600;'>
-Simulador Prático de Perda de Poder de Compra
-</p>
-<p style='color:#94a3b8; font-size:0.9rem; margin-bottom:15px; line-height:1.5;'>
-Insira um valor em dinheiro no início do período filtrado. O simulador calculará o quanto seria equivalente hoje, demonstrando visualmente o efeito da corrosão inflacionária.
-</p>
-</div>"""
+
+SIMULADOR_MD = """
+**Simulador Prático de Perda de Poder de Compra**
+
+:gray[Insira um valor em dinheiro no início do período filtrado. O simulador calculará o quanto seria equivalente hoje, demonstrando visualmente o efeito da corrosão inflacionária.]
+"""
 
 
-TITLE_BAR = "<p style='font-weight: 700; font-size: 1.15rem; color: #f3f4f6; margin-bottom: 15px;'>Inflação Oficial Registrada Ano a Ano</p>"
-TITLE_AREA = "<p style='font-weight: 700; font-size: 1.15rem; color: #f3f4f6; margin-bottom: 15px;'>Trajetória da Inflação Composta no Período</p>"
-TITLE_TABLE = "<p style='font-weight: 700; font-size: 1.15rem; color: #f3f4f6; margin-bottom: 15px;'>Tabela de Dados Consolidados</p>"
-HR_STYLE = "<hr style='border: 0; height: 1px; background: rgba(255,255,255,0.05); margin-top: 25px; margin-bottom: 25px;'>"
+TITLE_BAR = "**Inflação Oficial Registrada Ano a Ano**"
+TITLE_AREA = "**Trajetória da Inflação Composta no Período**"
+TITLE_TABLE = "**Tabela de Dados Consolidados**"
+HR_STYLE = "---"
 
 CSS_STYLES = """
     <style>
@@ -89,39 +86,22 @@ CSS_STYLES = """
 
 
 ANALISE_HISTORICA_MD = """
-            <div style="background-color: rgba(30, 41, 59, 0.4); border: 1px solid rgba(255, 255, 255, 0.08); padding: 25px; border-radius: 14px; margin-top: 10px;">
-                <h4 style="margin-top:0; color:#2563eb; font-weight:800; font-size:1.25rem;">Entendendo o Comportamento Inflacionário Recente</h4>
-                <p style="margin-bottom:20px; font-size: 0.95rem; color:#94a3b8; line-height:1.6;">
-                    A inflação brasileira é muito influenciada por eventos de grande escala, climáticos e geopolíticos. A seguir, explicamos de forma simples os três momentos mais marcantes da última década:
-                </p>
-                <div style="display: flex; flex-direction: column; gap: 15px;">
-                    <div style="background: rgba(255, 255, 255, 0.01); border-radius: 8px; padding: 15px; border: 1px solid rgba(255,255,255,0.03);">
-                        <strong style="color:#f3f4f6; font-size:0.95rem;">
-                            <span style="color:#db2777; margin-right:8px;">●</span>Ajuste Econômico e Tarifas (2016)
-                        </strong>
-                        <p style="margin: 5px 0 0 0; font-size:0.88rem; color:#94a3b8; line-height:1.5;">
-                            O ano de 2016 iniciou-se sob o reflexo da recessão econômica de 2015 e do forte realinhamento de preços administrados. Tarifas públicas como a conta de luz e o preço do combustível precisaram ser reajustadas de forma acentuada, mantendo o IPCA em um nível elevado de 6.29%.
-                        </p>
-                    </div>
-                    <div style="background: rgba(255, 255, 255, 0.01); border-radius: 8px; padding: 15px; border: 1px solid rgba(255,255,255,0.03);">
-                        <strong style="color:#f3f4f6; font-size:0.95rem;">
-                            <span style="color:#2563eb; margin-right:8px;">●</span>Pandemia e Desorganização Global (2021)
-                        </strong>
-                        <p style="margin: 5px 0 0 0; font-size:0.88rem; color:#94a3b8; line-height:1.5;">
-                            A inflação atingiu dois dígitos (10.03%) em 2021. As restrições de saúde no mundo todo paralisaram fábricas e portos, gerando escassez de componentes essenciais e encarecendo drasticamente o valor do frete internacional. No Brasil, o desequilíbrio na taxa de câmbio acelerou o encarecimento dos alimentos e produtos essenciais.
-                        </p>
-                    </div>
-                    <div style="background: rgba(255, 255, 255, 0.01); border-radius: 8px; padding: 15px; border: 1px solid rgba(255,255,255,0.03);">
-                        <strong style="color:#f3f4f6; font-size:0.95rem;">
-                            <span style="color:#10b981; margin-right:8px;">●</span>Conflitos Geopolíticos e Alimentos (2022)
-                        </strong>
-                        <p style="margin: 5px 0 0 0; font-size:0.88rem; color:#94a3b8; line-height:1.5;">
-                            Em 2022 a inflação fechou em 5.79%, sendo puxada fortemente pelo choque internacional decorrente do conflito armado na Ucrânia. O evento disparou o preço do petróleo e de insumos fundamentais (como fertilizantes e trigo). A inflação só não foi maior devido à redução emergencial de impostos federais e estaduais sobre energia e combustíveis.
-                        </p>
-                    </div>
-                </div>
-            </div>
-            """
+#### :blue[**Entendendo o Comportamento Inflacionário Recente**]
+
+:gray[A inflação brasileira é muito influenciada por eventos de grande escala, climáticos e geopolíticos. A seguir, explicamos de forma simples os três momentos mais marcantes da última década:]
+
+**:red[●] Ajuste Econômico e Tarifas (2016)**
+
+:gray[O ano de 2016 iniciou-se sob o reflexo da recessão econômica de 2015 e do forte realinhamento de preços administrados. Tarifas públicas como a conta de luz e o preço do combustível precisaram ser reajustadas de forma acentuada, mantendo o IPCA em um nível elevado de 6.29%.]
+
+**:blue[●] Pandemia e Desorganização Global (2021)**
+
+:gray[A inflação atingiu dois dígitos (10.03%) em 2021. As restrições de saúde no mundo todo paralisaram fábricas e portos, gerando escassez de componentes essenciais e encarecendo drasticamente o valor do frete internacional. No Brasil, o desequilíbrio na taxa de câmbio acelerou o encarecimento dos alimentos e produtos essenciais.]
+
+**:green[●] Conflitos Geopolíticos e Alimentos (2022)**
+
+:gray[Em 2022 a inflação fechou em 5.79%, sendo puxada fortemente pelo choque internacional decorrente do conflito armado na Ucrânia. O evento disparou o preço do petróleo e de insumos fundamentais (como fertilizantes e trigo). A inflação só não foi maior devido à redução emergencial de impostos federais e estaduais sobre energia e combustíveis.]
+"""
 
 
 # 1. CONFIGURAÇÃO DA PÁGINA E ESTILOS
@@ -133,7 +113,7 @@ st.set_page_config(
 )
 
 # Estilização CSS para visual limpo e legível (Dark Mode adaptado com Fira Code nos números)
-st.markdown(CSS_STYLES, unsafe_allow_html=True)
+st.html(CSS_STYLES)
 
 ARQUIVO_LIMPO = "data/ipca_limpo.csv"
 
@@ -164,7 +144,6 @@ if not df_ipca.empty:
     df_ipca["Fator_Interno"] = 1 + (df_ipca["Acumulado_Ano"] / 100)
 
 
-@st.cache_data
 def calcular_metricas_periodo(df: pd.DataFrame) -> tuple:
     """
     Calcula as métricas agregadas para o período selecionado de forma performática.
@@ -178,7 +157,6 @@ def calcular_metricas_periodo(df: pd.DataFrame) -> tuple:
     if df.empty:
         return 1.0, 0.0, 0.0, 0, 0.0
 
-    df = df.copy()
     fator_periodo = df["Fator_Interno"].prod()
     inflacao_acumulada_periodo = (fator_periodo - 1) * 100
 
@@ -206,22 +184,11 @@ if df_ipca.empty:
 else:
     # Sidebar Acadêmica
     st.sidebar.markdown(
-        "<div style='margin-bottom: 15px;'>"
-        "<h2 style='color: #2563eb; font-weight: 800; font-size: 1.4rem; margin-bottom: 2px;'>Painel IPCA</h2>"
-        "<p style='color: #64748b; font-size: 0.85rem; margin-top: 0;'>Ciência de Dados & Estrutura de Dados</p>"
-        "</div>",
-        unsafe_allow_html=True,
+        "## :blue[**Painel IPCA**]\n\n"
+        ":gray[Ciência de Dados & Estrutura de Dados]"
     )
-    st.sidebar.markdown(
-        "<hr style='border: 0; height: 1px; background: rgba(255,255,255,0.05); margin: 10px 0;'>",
-        unsafe_allow_html=True,
-    )
-    st.sidebar.markdown(
-        "<p style='color: #94a3b8; font-size: 0.85rem; line-height: 1.5;'>"
-        "Este painel analisa a trajetória histórica da inflação oficial do país de forma interativa. "
-        "</p>",
-        unsafe_allow_html=True,
-    )
+    st.sidebar.markdown("---")
+    st.sidebar.markdown(":gray[Este painel analisa a trajetória histórica da inflação oficial do país de forma interativa.]")
 
     st.sidebar.markdown("### Filtros temporais")
     anos_disponiveis = df_ipca["Ano"].unique()
@@ -231,25 +198,6 @@ else:
         "Selecione os Anos de Análise:",
         options=anos_disponiveis,
         default=anos_disponiveis,
-    )
-
-    st.sidebar.markdown(
-        "<hr style='border: 0; height: 1px; background: rgba(255,255,255,0.05); margin: 15px 0;'>",
-        unsafe_allow_html=True,
-    )
-
-    # Equipe Desenvolvedora na Sidebar
-    st.sidebar.markdown("### Equipe Desenvolvedora")
-    st.sidebar.markdown(
-        "<div style='color: #94a3b8; font-size: 0.85rem; line-height: 1.6;'>"
-        "• Matheus<br>"
-        "• Luis<br>"
-        "• Henrique<br>"
-        "• Guilherme<br>"
-        "• João<br>"
-        "• Luiz"
-        "</div>",
-        unsafe_allow_html=True,
     )
 
     if not anos_selecionados:
@@ -296,12 +244,12 @@ else:
                 help="O ano dentro da sua seleção que registrou a maior taxa fechada acumulada.",
             )
 
-        st.markdown("<br>", unsafe_allow_html=True)
+        st.markdown("\n\n")
 
         # SEÇÃO NOVA: SIMULADOR DE PODER DE COMPRA
         st.markdown("### O Impacto da Inflação no seu Bolso")
 
-        st.markdown(SIMULADOR_MD, unsafe_allow_html=True)
+        st.markdown(SIMULADOR_MD)
 
         # Caixas do simulador lado a lado
         s_col1, s_col2 = st.columns([1.2, 1.8])
@@ -336,20 +284,13 @@ else:
 
         with s_col2:
             st.markdown(
-                f"<div style='margin-top: 10px;'>"
-                f"<p style='font-size: 1.05rem; line-height: 1.6; color: #f3f4f6;'>"
-                f"{html.escape(str(item_nome))} que custava <strong>R$ {html.escape(f'{valor_original:.2f}')}</strong> em {html.escape(str(ano_inicial))}, custaria aproximadamente "
-                f"<span style='color: #db2777; font-weight: 700; font-family: Fira Code;'>R$ {html.escape(f'{valor_necessario:.2f}')}</span> em {html.escape(str(ano_final))} "
-                f"para manter exatamente o mesmo padrão de consumo de itens equivalentes."
-                f"</p>"
-                f"<p style='font-size: 0.9rem; color: #94a3b8; margin: 0;'>"
-                f"Isso representa uma <strong>corrosão real de {html.escape(f'{perda_poder_compra:.1f}')}% no poder de compra</strong> do Real brasileiro durante este período."
-                f"</p>"
-                f"</div>",
-                unsafe_allow_html=True,
+                f"{item_nome} que custava :green[**R\\$ {valor_original:.2f}**] em {ano_inicial}, custaria aproximadamente "
+                f":red[**R\\$ {valor_necessario:.2f}**] em {ano_final} "
+                f"para manter exatamente o mesmo padrão de consumo de itens equivalentes.\n\n"
+                f":gray[Isso representa uma **corrosão real de {perda_poder_compra:.1f}% no poder de compra** do Real brasileiro durante este período.]"
             )
 
-        st.markdown(HR_STYLE, unsafe_allow_html=True)
+        st.markdown(HR_STYLE)
 
         # Abas
         tab_graficos, tab_tabela, tab_analise = st.tabs(
@@ -365,7 +306,7 @@ else:
             g_col1, g_col2 = st.columns(2)
 
             with g_col1:
-                st.markdown(TITLE_BAR, unsafe_allow_html=True)
+                st.markdown(TITLE_BAR)
 
                 # Gráfico de Barras Plotly
                 fig_bar = px.bar(
@@ -406,11 +347,11 @@ else:
                     hovermode="x",
                 )
                 st.plotly_chart(
-                    fig_bar, use_container_width=True, config={"displayModeBar": False}
+                    fig_bar, width="stretch", config={"displayModeBar": False}
                 )
 
             with g_col2:
-                st.markdown(TITLE_AREA, unsafe_allow_html=True)
+                st.markdown(TITLE_AREA)
 
                 # Gráfico de Linha / Área para Trajetória Composta
                 df_filtrado["Trajetoria_Composta"] = (
@@ -469,11 +410,11 @@ else:
                     height=380,
                 )
                 st.plotly_chart(
-                    fig_line, use_container_width=True, config={"displayModeBar": False}
+                    fig_line, width="stretch", config={"displayModeBar": False}
                 )
 
         with tab_tabela:
-            st.markdown(TITLE_TABLE, unsafe_allow_html=True)
+            st.markdown(TITLE_TABLE)
 
             df_tabela = df_filtrado.copy()
             df_tabela["Ano"] = df_tabela["Ano"].astype(str)
@@ -497,8 +438,8 @@ else:
                 "Inflação Composta Acumulada (Série Total)",
             ]
 
-            st.dataframe(df_tabela, use_container_width=True, hide_index=True)
+            st.dataframe(df_tabela, width="stretch", hide_index=True)
 
         with tab_analise:
             # Análise Histórica Contextual formatada
-            st.markdown(ANALISE_HISTORICA_MD, unsafe_allow_html=True)
+            st.markdown(ANALISE_HISTORICA_MD)

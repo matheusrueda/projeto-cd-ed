@@ -77,7 +77,7 @@ def _limpar_e_converter_tipos(df: pd.DataFrame) -> pd.DataFrame:
     """
     # Conversão de tipos e tratamento de valores nulos
     df["Inflacao_Mensal"] = pd.to_numeric(
-        df["Inflacao_Mensal"].str.replace(",", "."), errors="coerce"
+        df["Inflacao_Mensal"].str.replace(",", ".", regex=False), errors="coerce"
     )
     # Se houver algum nulo na inflação, removemos a linha correspondente
     if df["Inflacao_Mensal"].isnull().any():
@@ -103,6 +103,79 @@ def _limpar_e_converter_tipos(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
+def _filtrar_anos_completos(df: pd.DataFrame) -> pd.DataFrame:
+    """Filtra o DataFrame mantendo apenas os anos que possuem 12 meses de dados."""
+    counts = df.groupby("Ano")["Codigo_Mes"].transform("count")
+    anos_ignorados = df[counts != 12]["Ano"].unique()
+
+    if len(anos_ignorados) > 0:
+        logger.info(
+            f"Anos ignorados por conterem dados incompletos: {list(anos_ignorados)}"
+        )
+
+    return df[counts == 12]
+
+
+def _calcular_resumo_anual(df: pd.DataFrame) -> pd.DataFrame:
+    """Realiza agregação anual, calcula médias e fator acumulado do ano."""
+    if df.empty:
+        raise ValueError(
+            "Nenhum ano completo (com 12 meses) foi encontrado para processamento."
+        )
+
+    # Agregação vetorizada
+    df_resumo = (
+        df.groupby("Ano")
+        .agg(Media_Mensal=("Inflacao_Mensal", "mean"), Fator_Prod=("Fator", "prod"))
+        .reset_index()
+    )
+
+    # Calcula o acumulado anual
+    df_resumo["Acumulado_Ano"] = (df_resumo["Fator_Prod"] - 1) * 100
+
+    # Formatação e seleção das colunas desejadas para igualar ao comportamento original
+    df_resumo["Media_Mensal"] = df_resumo["Media_Mensal"].round(4)
+    df_resumo["Acumulado_Ano"] = df_resumo["Acumulado_Ano"].round(4)
+    df_resumo = df_resumo[["Ano", "Media_Mensal", "Acumulado_Ano"]]
+
+    # Ordena por ano
+    df_resumo = df_resumo.sort_values("Ano").reset_index(drop=True)
+
+    return df_resumo
+
+
+def _calcular_fator_composto(df_resumo: pd.DataFrame) -> pd.DataFrame:
+    """Seleciona os últimos 10 anos e calcula a inflação composta acumulada."""
+    # Filtra estritamente os últimos 10 anos cheios disponíveis
+    df_resumo = df_resumo.tail(10).reset_index(drop=True)
+
+    # Cálculo do fator composto acumulado ao longo da série de 10 anos (inflação composta acumulada ano a ano)
+    # Fator anual correspondente: 1 + (Acumulado_Ano / 100)
+    df_resumo["Fator_Anual"] = 1 + (df_resumo["Acumulado_Ano"] / 100)
+
+    # Multiplicação acumulada dos fatores anuais para obter a trajetória da inflação composta
+    df_resumo["Fator_Composto_Acumulado"] = df_resumo["Fator_Anual"].cumprod()
+    # Inflação composta acumulada em percentual a partir do início da série
+    df_resumo["Inflacao_Composta_Acumulada_Perc"] = (
+        df_resumo["Fator_Composto_Acumulado"] - 1
+    ) * 100
+
+    # Arredondamentos finais para gravação limpa no CSV
+    df_resumo["Media_Mensal"] = df_resumo["Media_Mensal"].round(2)
+    df_resumo["Acumulado_Ano"] = df_resumo["Acumulado_Ano"].round(2)
+    df_resumo["Fator_Composto_Acumulado"] = df_resumo["Fator_Composto_Acumulado"].round(
+        4
+    )
+    df_resumo["Inflacao_Composta_Acumulada_Perc"] = df_resumo[
+        "Inflacao_Composta_Acumulada_Perc"
+    ].round(2)
+
+    # Remove a coluna auxiliar do fator anual antes de salvar
+    df_resumo = df_resumo.drop(columns=["Fator_Anual"])
+
+    return df_resumo
+
+
 def _agregar_e_calcular_fatores(df: pd.DataFrame) -> pd.DataFrame:
     """
     Calcula o acumulado anual, filtra anos incompletos, seleciona os últimos 10 anos,
@@ -122,68 +195,11 @@ def _agregar_e_calcular_fatores(df: pd.DataFrame) -> pd.DataFrame:
 
     logger.info("Realizando consolidação anual e cálculo de fatores compostos...")
 
-    # Filtra anos incompletos de forma vetorizada
-    counts = df.groupby("Ano")["Codigo_Mes"].transform("count")
-    anos_ignorados = df[counts != 12]["Ano"].unique()
+    df_valido = _filtrar_anos_completos(df)
+    df_resumo = _calcular_resumo_anual(df_valido)
+    df_final = _calcular_fator_composto(df_resumo)
 
-    if len(anos_ignorados) > 0:
-        logger.info(
-            f"Anos ignorados por conterem dados incompletos: {list(anos_ignorados)}"
-        )
-
-    df_valido = df[counts == 12]
-
-    # Agregação vetorizada
-    df_resumo = (
-        df_valido.groupby("Ano")
-        .agg(Media_Mensal=("Inflacao_Mensal", "mean"), Fator_Prod=("Fator", "prod"))
-        .reset_index()
-    )
-
-    # Calcula o acumulado anual
-    df_resumo["Acumulado_Ano"] = (df_resumo["Fator_Prod"] - 1) * 100
-
-    # Formatação e seleção das colunas desejadas para igualar ao comportamento original
-    df_resumo["Media_Mensal"] = df_resumo["Media_Mensal"].round(4)
-    df_resumo["Acumulado_Ano"] = df_resumo["Acumulado_Ano"].round(4)
-    df_resumo = df_resumo[["Ano", "Media_Mensal", "Acumulado_Ano"]]
-
-    if df_resumo.empty:
-        raise ValueError(
-            "Nenhum ano completo (com 12 meses) foi encontrado para processamento."
-        )
-
-    # Ordena por ano
-    df_resumo = df_resumo.sort_values("Ano").reset_index(drop=True)
-
-    # Filtra estritamente os últimos 10 anos cheios disponíveis
-    df_resumo = df_resumo.tail(10).reset_index(drop=True)
-
-    # Cálculo do fator composto acumulado ao longo da série de 10 anos (inflação composta acumulada ano a ano)
-    # Fator anual correspondente: 1 + (Acumulado_Ano / 100)
-    df_resumo["Fator_Anual"] = 1 + (df_resumo["Acumulado_Ano"] / 100)
-
-    # Multiplicação acumulada dos fatores anuais para obter a trajetória da inflação composta
-    df_resumo["Fator_Composto_Acumulado"] = df_resumo["Fator_Anual"].cumprod()
-    # Inflação composta acumulada em percentual a partir do início da série
-    df_resumo["Inflacao_Composta_Acumulada_Perc"] = (
-        df_resumo["Fator_Composto_Acumulado"] - 1
-    ) * 100
-
-    # Arredondamentos finais para gravação limpa no CSV
-    df_resumo["Media_Mensal"] = df_resumo["Media_Mensal"].round(2)
-    df_resumo["Acumulado_Ano"] = df_resumo["Acumulado_Ano"].round(2)
-    df_resumo["Fator_Composto_Acumulado"] = df_resumo[
-        "Fator_Composto_Acumulado"
-    ].round(4)
-    df_resumo["Inflacao_Composta_Acumulada_Perc"] = df_resumo[
-        "Inflacao_Composta_Acumulada_Perc"
-    ].round(2)
-
-    # Remove a coluna auxiliar do fator anual antes de salvar
-    df_resumo = df_resumo.drop(columns=["Fator_Anual"])
-
-    return df_resumo
+    return df_final
 
 
 def _salvar_dados_processados(df_resumo: pd.DataFrame, caminho_limpo: str) -> None:
