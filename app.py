@@ -206,7 +206,7 @@ else:
         )
     else:
         # Filtra os dados com base na seleção
-        df_filtrado = df_ipca[df_ipca["Ano"].isin(anos_selecionados)].copy()
+        df_filtrado = df_ipca[df_ipca["Ano"].isin(anos_selecionados)]
         df_filtrado = df_filtrado.sort_values("Ano").reset_index(drop=True)
 
         # Cabeçalho Principal (Storytelling Humano)
@@ -416,7 +416,7 @@ else:
         with tab_tabela:
             st.markdown(TITLE_TABLE)
 
-            df_tabela = df_filtrado.copy()
+            df_tabela = df_filtrado
             df_tabela["Ano"] = df_tabela["Ano"].astype(str)
             df_tabela["Media_Mensal"] = df_tabela["Media_Mensal"].map("{:.2f}%".format)
             df_tabela["Acumulado_Ano"] = df_tabela["Acumulado_Ano"].map(
