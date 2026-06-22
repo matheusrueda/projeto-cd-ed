@@ -32,7 +32,7 @@ def enforce_timeout(connect_timeout: float = 3.0, read_timeout: float = 15.0):
     def request_with_timeout(self, method, url, **kwargs):
         if "timeout" not in kwargs:
             kwargs["timeout"] = (connect_timeout, read_timeout)
-        kwargs.setdefault("verify", True)
+        kwargs["verify"] = True
         return _original_request(self, method, url, **kwargs)
 
     requests.Session.request = request_with_timeout
