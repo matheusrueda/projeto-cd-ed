@@ -207,7 +207,7 @@ else:
     else:
         # Filtra os dados com base na seleção
         df_filtrado = df_ipca[df_ipca["Ano"].isin(anos_selecionados)].copy()
-        df_filtrado = df_filtrado.sort_values("Ano").reset_index(drop=True)
+        df_filtrado = df_filtrado.reset_index(drop=True)
 
         # Cabeçalho Principal (Storytelling Humano)
         st.title("Inflação Acumulada e o Custo de Vida no Brasil")
