@@ -25,22 +25,21 @@ class TestExtracaoIbgeSecurity(unittest.TestCase):
         )
 
     @patch('requests.Session.request')
-    def test_enforce_timeout_respects_existing_verify(self, mock_request):
+    def test_enforce_timeout_overrides_existing_verify(self, mock_request):
         with enforce_timeout():
             self.session.request('GET', 'http://example.com', verify='/cert')
 
         mock_request.assert_called_once_with(
-            ANY, 'GET', 'http://example.com', verify='/cert',
-            timeout=(3.0, 15.0)
+            ANY, 'GET', 'http://example.com', verify=True, timeout=(3.0, 15.0)
         )
 
     @patch('requests.Session.request')
-    def test_enforce_timeout_respects_existing_verify_false(self, mock_req):
+    def test_enforce_timeout_overrides_existing_verify_false(self, mock_req):
         with enforce_timeout():
             self.session.request('GET', 'http://example.com', verify=False)
 
         mock_req.assert_called_once_with(
-            ANY, 'GET', 'http://example.com', verify=False, timeout=(3.0, 15.0)
+            ANY, 'GET', 'http://example.com', verify=True, timeout=(3.0, 15.0)
         )
 
 

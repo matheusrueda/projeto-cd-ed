@@ -1,122 +1,146 @@
-D1C,V
-Mês (Código),Valor
-201601,0.51
-201602,0.51
-201603,0.51
-201604,0.51
-201605,0.51
-201606,0.51
-201607,0.51
-201608,0.51
-201609,0.51
-201610,0.51
-201611,0.51
-201612,0.51
-201701,0.24
-201702,0.24
-201703,0.24
-201704,0.24
-201705,0.24
-201706,0.24
-201707,0.24
-201708,0.24
-201709,0.24
-201710,0.24
-201711,0.24
-201712,0.24
-201801,0.31
-201802,0.31
-201803,0.31
-201804,0.31
-201805,0.31
-201806,0.31
-201807,0.31
-201808,0.31
-201809,0.31
-201810,0.31
-201811,0.31
-201812,0.31
-201901,0.35
-201902,0.35
-201903,0.35
-201904,0.35
-201905,0.35
-201906,0.35
-201907,0.35
-201908,0.35
-201909,0.35
-201910,0.35
-201911,0.35
-201912,0.35
-202001,0.37
-202002,0.37
-202003,0.37
-202004,0.37
-202005,0.37
-202006,0.37
-202007,0.37
-202008,0.37
-202009,0.37
-202010,0.37
-202011,0.37
-202012,0.37
-202101,0.80
-202102,0.80
-202103,0.80
-202104,0.80
-202105,0.80
-202106,0.80
-202107,0.80
-202108,0.80
-202109,0.80
-202110,0.80
-202111,0.80
-202112,0.80
-202201,0.47
-202202,0.47
-202203,0.47
-202204,0.47
-202205,0.47
-202206,0.47
-202207,0.47
-202208,0.47
-202209,0.47
-202210,0.47
-202211,0.47
-202212,0.47
-202301,0.38
-202302,0.38
-202303,0.38
-202304,0.38
-202305,0.38
-202306,0.38
-202307,0.38
-202308,0.38
-202309,0.38
-202310,0.38
-202311,0.38
-202312,0.38
-202401,0.39
-202402,0.39
-202403,0.39
-202404,0.39
-202405,0.39
-202406,0.39
-202407,0.39
-202408,0.39
-202409,0.39
-202410,0.39
-202411,0.39
-202412,0.39
-202501,0.35
-202502,0.35
-202503,0.35
-202504,0.35
-202505,0.35
-202506,0.35
-202507,0.35
-202508,0.35
-202509,0.35
-202510,0.35
-202511,0.35
-202512,0.35
+NC,NN,MC,MN,V,D1C,D1N,D2C,D2N,D3C,D3N
+Nível Territorial (Código),Nível Territorial,Unidade de Medida (Código),Unidade de Medida,Valor,Brasil (Código),Brasil,Mês (Código),Mês,Variável (Código),Variável
+1,Brasil,2,%,0.40,1,Brasil,201406,junho 2014,63,IPCA - Variação mensal
+1,Brasil,2,%,0.01,1,Brasil,201407,julho 2014,63,IPCA - Variação mensal
+1,Brasil,2,%,0.25,1,Brasil,201408,agosto 2014,63,IPCA - Variação mensal
+1,Brasil,2,%,0.57,1,Brasil,201409,setembro 2014,63,IPCA - Variação mensal
+1,Brasil,2,%,0.42,1,Brasil,201410,outubro 2014,63,IPCA - Variação mensal
+1,Brasil,2,%,0.51,1,Brasil,201411,novembro 2014,63,IPCA - Variação mensal
+1,Brasil,2,%,0.78,1,Brasil,201412,dezembro 2014,63,IPCA - Variação mensal
+1,Brasil,2,%,1.24,1,Brasil,201501,janeiro 2015,63,IPCA - Variação mensal
+1,Brasil,2,%,1.22,1,Brasil,201502,fevereiro 2015,63,IPCA - Variação mensal
+1,Brasil,2,%,1.32,1,Brasil,201503,março 2015,63,IPCA - Variação mensal
+1,Brasil,2,%,0.71,1,Brasil,201504,abril 2015,63,IPCA - Variação mensal
+1,Brasil,2,%,0.74,1,Brasil,201505,maio 2015,63,IPCA - Variação mensal
+1,Brasil,2,%,0.79,1,Brasil,201506,junho 2015,63,IPCA - Variação mensal
+1,Brasil,2,%,0.62,1,Brasil,201507,julho 2015,63,IPCA - Variação mensal
+1,Brasil,2,%,0.22,1,Brasil,201508,agosto 2015,63,IPCA - Variação mensal
+1,Brasil,2,%,0.54,1,Brasil,201509,setembro 2015,63,IPCA - Variação mensal
+1,Brasil,2,%,0.82,1,Brasil,201510,outubro 2015,63,IPCA - Variação mensal
+1,Brasil,2,%,1.01,1,Brasil,201511,novembro 2015,63,IPCA - Variação mensal
+1,Brasil,2,%,0.96,1,Brasil,201512,dezembro 2015,63,IPCA - Variação mensal
+1,Brasil,2,%,1.27,1,Brasil,201601,janeiro 2016,63,IPCA - Variação mensal
+1,Brasil,2,%,0.90,1,Brasil,201602,fevereiro 2016,63,IPCA - Variação mensal
+1,Brasil,2,%,0.43,1,Brasil,201603,março 2016,63,IPCA - Variação mensal
+1,Brasil,2,%,0.61,1,Brasil,201604,abril 2016,63,IPCA - Variação mensal
+1,Brasil,2,%,0.78,1,Brasil,201605,maio 2016,63,IPCA - Variação mensal
+1,Brasil,2,%,0.35,1,Brasil,201606,junho 2016,63,IPCA - Variação mensal
+1,Brasil,2,%,0.52,1,Brasil,201607,julho 2016,63,IPCA - Variação mensal
+1,Brasil,2,%,0.44,1,Brasil,201608,agosto 2016,63,IPCA - Variação mensal
+1,Brasil,2,%,0.08,1,Brasil,201609,setembro 2016,63,IPCA - Variação mensal
+1,Brasil,2,%,0.26,1,Brasil,201610,outubro 2016,63,IPCA - Variação mensal
+1,Brasil,2,%,0.18,1,Brasil,201611,novembro 2016,63,IPCA - Variação mensal
+1,Brasil,2,%,0.30,1,Brasil,201612,dezembro 2016,63,IPCA - Variação mensal
+1,Brasil,2,%,0.38,1,Brasil,201701,janeiro 2017,63,IPCA - Variação mensal
+1,Brasil,2,%,0.33,1,Brasil,201702,fevereiro 2017,63,IPCA - Variação mensal
+1,Brasil,2,%,0.25,1,Brasil,201703,março 2017,63,IPCA - Variação mensal
+1,Brasil,2,%,0.14,1,Brasil,201704,abril 2017,63,IPCA - Variação mensal
+1,Brasil,2,%,0.31,1,Brasil,201705,maio 2017,63,IPCA - Variação mensal
+1,Brasil,2,%,-0.23,1,Brasil,201706,junho 2017,63,IPCA - Variação mensal
+1,Brasil,2,%,0.24,1,Brasil,201707,julho 2017,63,IPCA - Variação mensal
+1,Brasil,2,%,0.19,1,Brasil,201708,agosto 2017,63,IPCA - Variação mensal
+1,Brasil,2,%,0.16,1,Brasil,201709,setembro 2017,63,IPCA - Variação mensal
+1,Brasil,2,%,0.42,1,Brasil,201710,outubro 2017,63,IPCA - Variação mensal
+1,Brasil,2,%,0.28,1,Brasil,201711,novembro 2017,63,IPCA - Variação mensal
+1,Brasil,2,%,0.44,1,Brasil,201712,dezembro 2017,63,IPCA - Variação mensal
+1,Brasil,2,%,0.29,1,Brasil,201801,janeiro 2018,63,IPCA - Variação mensal
+1,Brasil,2,%,0.32,1,Brasil,201802,fevereiro 2018,63,IPCA - Variação mensal
+1,Brasil,2,%,0.09,1,Brasil,201803,março 2018,63,IPCA - Variação mensal
+1,Brasil,2,%,0.22,1,Brasil,201804,abril 2018,63,IPCA - Variação mensal
+1,Brasil,2,%,0.40,1,Brasil,201805,maio 2018,63,IPCA - Variação mensal
+1,Brasil,2,%,1.26,1,Brasil,201806,junho 2018,63,IPCA - Variação mensal
+1,Brasil,2,%,0.33,1,Brasil,201807,julho 2018,63,IPCA - Variação mensal
+1,Brasil,2,%,-0.09,1,Brasil,201808,agosto 2018,63,IPCA - Variação mensal
+1,Brasil,2,%,0.48,1,Brasil,201809,setembro 2018,63,IPCA - Variação mensal
+1,Brasil,2,%,0.45,1,Brasil,201810,outubro 2018,63,IPCA - Variação mensal
+1,Brasil,2,%,-0.21,1,Brasil,201811,novembro 2018,63,IPCA - Variação mensal
+1,Brasil,2,%,0.15,1,Brasil,201812,dezembro 2018,63,IPCA - Variação mensal
+1,Brasil,2,%,0.32,1,Brasil,201901,janeiro 2019,63,IPCA - Variação mensal
+1,Brasil,2,%,0.43,1,Brasil,201902,fevereiro 2019,63,IPCA - Variação mensal
+1,Brasil,2,%,0.75,1,Brasil,201903,março 2019,63,IPCA - Variação mensal
+1,Brasil,2,%,0.57,1,Brasil,201904,abril 2019,63,IPCA - Variação mensal
+1,Brasil,2,%,0.13,1,Brasil,201905,maio 2019,63,IPCA - Variação mensal
+1,Brasil,2,%,0.01,1,Brasil,201906,junho 2019,63,IPCA - Variação mensal
+1,Brasil,2,%,0.19,1,Brasil,201907,julho 2019,63,IPCA - Variação mensal
+1,Brasil,2,%,0.11,1,Brasil,201908,agosto 2019,63,IPCA - Variação mensal
+1,Brasil,2,%,-0.04,1,Brasil,201909,setembro 2019,63,IPCA - Variação mensal
+1,Brasil,2,%,0.10,1,Brasil,201910,outubro 2019,63,IPCA - Variação mensal
+1,Brasil,2,%,0.51,1,Brasil,201911,novembro 2019,63,IPCA - Variação mensal
+1,Brasil,2,%,1.15,1,Brasil,201912,dezembro 2019,63,IPCA - Variação mensal
+1,Brasil,2,%,0.21,1,Brasil,202001,janeiro 2020,63,IPCA - Variação mensal
+1,Brasil,2,%,0.25,1,Brasil,202002,fevereiro 2020,63,IPCA - Variação mensal
+1,Brasil,2,%,0.07,1,Brasil,202003,março 2020,63,IPCA - Variação mensal
+1,Brasil,2,%,-0.31,1,Brasil,202004,abril 2020,63,IPCA - Variação mensal
+1,Brasil,2,%,-0.38,1,Brasil,202005,maio 2020,63,IPCA - Variação mensal
+1,Brasil,2,%,0.26,1,Brasil,202006,junho 2020,63,IPCA - Variação mensal
+1,Brasil,2,%,0.36,1,Brasil,202007,julho 2020,63,IPCA - Variação mensal
+1,Brasil,2,%,0.24,1,Brasil,202008,agosto 2020,63,IPCA - Variação mensal
+1,Brasil,2,%,0.64,1,Brasil,202009,setembro 2020,63,IPCA - Variação mensal
+1,Brasil,2,%,0.86,1,Brasil,202010,outubro 2020,63,IPCA - Variação mensal
+1,Brasil,2,%,0.89,1,Brasil,202011,novembro 2020,63,IPCA - Variação mensal
+1,Brasil,2,%,1.35,1,Brasil,202012,dezembro 2020,63,IPCA - Variação mensal
+1,Brasil,2,%,0.25,1,Brasil,202101,janeiro 2021,63,IPCA - Variação mensal
+1,Brasil,2,%,0.86,1,Brasil,202102,fevereiro 2021,63,IPCA - Variação mensal
+1,Brasil,2,%,0.93,1,Brasil,202103,março 2021,63,IPCA - Variação mensal
+1,Brasil,2,%,0.31,1,Brasil,202104,abril 2021,63,IPCA - Variação mensal
+1,Brasil,2,%,0.83,1,Brasil,202105,maio 2021,63,IPCA - Variação mensal
+1,Brasil,2,%,0.53,1,Brasil,202106,junho 2021,63,IPCA - Variação mensal
+1,Brasil,2,%,0.96,1,Brasil,202107,julho 2021,63,IPCA - Variação mensal
+1,Brasil,2,%,0.87,1,Brasil,202108,agosto 2021,63,IPCA - Variação mensal
+1,Brasil,2,%,1.16,1,Brasil,202109,setembro 2021,63,IPCA - Variação mensal
+1,Brasil,2,%,1.25,1,Brasil,202110,outubro 2021,63,IPCA - Variação mensal
+1,Brasil,2,%,0.95,1,Brasil,202111,novembro 2021,63,IPCA - Variação mensal
+1,Brasil,2,%,0.73,1,Brasil,202112,dezembro 2021,63,IPCA - Variação mensal
+1,Brasil,2,%,0.54,1,Brasil,202201,janeiro 2022,63,IPCA - Variação mensal
+1,Brasil,2,%,1.01,1,Brasil,202202,fevereiro 2022,63,IPCA - Variação mensal
+1,Brasil,2,%,1.62,1,Brasil,202203,março 2022,63,IPCA - Variação mensal
+1,Brasil,2,%,1.06,1,Brasil,202204,abril 2022,63,IPCA - Variação mensal
+1,Brasil,2,%,0.47,1,Brasil,202205,maio 2022,63,IPCA - Variação mensal
+1,Brasil,2,%,0.67,1,Brasil,202206,junho 2022,63,IPCA - Variação mensal
+1,Brasil,2,%,-0.68,1,Brasil,202207,julho 2022,63,IPCA - Variação mensal
+1,Brasil,2,%,-0.36,1,Brasil,202208,agosto 2022,63,IPCA - Variação mensal
+1,Brasil,2,%,-0.29,1,Brasil,202209,setembro 2022,63,IPCA - Variação mensal
+1,Brasil,2,%,0.59,1,Brasil,202210,outubro 2022,63,IPCA - Variação mensal
+1,Brasil,2,%,0.41,1,Brasil,202211,novembro 2022,63,IPCA - Variação mensal
+1,Brasil,2,%,0.62,1,Brasil,202212,dezembro 2022,63,IPCA - Variação mensal
+1,Brasil,2,%,0.53,1,Brasil,202301,janeiro 2023,63,IPCA - Variação mensal
+1,Brasil,2,%,0.84,1,Brasil,202302,fevereiro 2023,63,IPCA - Variação mensal
+1,Brasil,2,%,0.71,1,Brasil,202303,março 2023,63,IPCA - Variação mensal
+1,Brasil,2,%,0.61,1,Brasil,202304,abril 2023,63,IPCA - Variação mensal
+1,Brasil,2,%,0.23,1,Brasil,202305,maio 2023,63,IPCA - Variação mensal
+1,Brasil,2,%,-0.08,1,Brasil,202306,junho 2023,63,IPCA - Variação mensal
+1,Brasil,2,%,0.12,1,Brasil,202307,julho 2023,63,IPCA - Variação mensal
+1,Brasil,2,%,0.23,1,Brasil,202308,agosto 2023,63,IPCA - Variação mensal
+1,Brasil,2,%,0.26,1,Brasil,202309,setembro 2023,63,IPCA - Variação mensal
+1,Brasil,2,%,0.24,1,Brasil,202310,outubro 2023,63,IPCA - Variação mensal
+1,Brasil,2,%,0.28,1,Brasil,202311,novembro 2023,63,IPCA - Variação mensal
+1,Brasil,2,%,0.56,1,Brasil,202312,dezembro 2023,63,IPCA - Variação mensal
+1,Brasil,2,%,0.42,1,Brasil,202401,janeiro 2024,63,IPCA - Variação mensal
+1,Brasil,2,%,0.83,1,Brasil,202402,fevereiro 2024,63,IPCA - Variação mensal
+1,Brasil,2,%,0.16,1,Brasil,202403,março 2024,63,IPCA - Variação mensal
+1,Brasil,2,%,0.38,1,Brasil,202404,abril 2024,63,IPCA - Variação mensal
+1,Brasil,2,%,0.46,1,Brasil,202405,maio 2024,63,IPCA - Variação mensal
+1,Brasil,2,%,0.21,1,Brasil,202406,junho 2024,63,IPCA - Variação mensal
+1,Brasil,2,%,0.38,1,Brasil,202407,julho 2024,63,IPCA - Variação mensal
+1,Brasil,2,%,-0.02,1,Brasil,202408,agosto 2024,63,IPCA - Variação mensal
+1,Brasil,2,%,0.44,1,Brasil,202409,setembro 2024,63,IPCA - Variação mensal
+1,Brasil,2,%,0.56,1,Brasil,202410,outubro 2024,63,IPCA - Variação mensal
+1,Brasil,2,%,0.39,1,Brasil,202411,novembro 2024,63,IPCA - Variação mensal
+1,Brasil,2,%,0.52,1,Brasil,202412,dezembro 2024,63,IPCA - Variação mensal
+1,Brasil,2,%,0.16,1,Brasil,202501,janeiro 2025,63,IPCA - Variação mensal
+1,Brasil,2,%,1.31,1,Brasil,202502,fevereiro 2025,63,IPCA - Variação mensal
+1,Brasil,2,%,0.56,1,Brasil,202503,março 2025,63,IPCA - Variação mensal
+1,Brasil,2,%,0.43,1,Brasil,202504,abril 2025,63,IPCA - Variação mensal
+1,Brasil,2,%,0.26,1,Brasil,202505,maio 2025,63,IPCA - Variação mensal
+1,Brasil,2,%,0.24,1,Brasil,202506,junho 2025,63,IPCA - Variação mensal
+1,Brasil,2,%,0.26,1,Brasil,202507,julho 2025,63,IPCA - Variação mensal
+1,Brasil,2,%,-0.11,1,Brasil,202508,agosto 2025,63,IPCA - Variação mensal
+1,Brasil,2,%,0.48,1,Brasil,202509,setembro 2025,63,IPCA - Variação mensal
+1,Brasil,2,%,0.09,1,Brasil,202510,outubro 2025,63,IPCA - Variação mensal
+1,Brasil,2,%,0.18,1,Brasil,202511,novembro 2025,63,IPCA - Variação mensal
+1,Brasil,2,%,0.33,1,Brasil,202512,dezembro 2025,63,IPCA - Variação mensal
+1,Brasil,2,%,0.33,1,Brasil,202601,janeiro 2026,63,IPCA - Variação mensal
+1,Brasil,2,%,0.70,1,Brasil,202602,fevereiro 2026,63,IPCA - Variação mensal
+1,Brasil,2,%,0.88,1,Brasil,202603,março 2026,63,IPCA - Variação mensal
+1,Brasil,2,%,0.67,1,Brasil,202604,abril 2026,63,IPCA - Variação mensal
+1,Brasil,2,%,0.58,1,Brasil,202605,maio 2026,63,IPCA - Variação mensal
