@@ -4,11 +4,10 @@ import os
 import logging
 import pandas as pd
 import requests
-import sidrapy
+import ssl
+import urllib3
 import json
 import re
-import contextlib
-import functools
 from tenacity import (
     retry,
     wait_exponential,
@@ -24,22 +23,26 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-@contextlib.contextmanager
-def enforce_timeout(connect_timeout: float = 3.0, read_timeout: float = 15.0):
-    _original_request = requests.Session.request
+class HttpAdapter(requests.adapters.HTTPAdapter):
+    """Transport adapter that allows us to use a custom ssl_context."""
+    def __init__(self, ssl_context=None, **kwargs):
+        self.ssl_context = ssl_context
+        super().__init__(**kwargs)
 
-    @functools.wraps(_original_request)
-    def request_with_timeout(self, method, url, **kwargs):
-        if "timeout" not in kwargs:
-            kwargs["timeout"] = (connect_timeout, read_timeout)
-        kwargs.setdefault("verify", True)
-        return _original_request(self, method, url, **kwargs)
+    def init_poolmanager(self, connections, maxsize, block=False):
+        self.poolmanager = urllib3.poolmanager.PoolManager(
+            num_pools=connections,
+            maxsize=maxsize,
+            block=block,
+            ssl_context=self.ssl_context,
+        )
 
-    requests.Session.request = request_with_timeout
-    try:
-        yield
-    finally:
-        requests.Session.request = _original_request
+def get_legacy_session():
+    ctx = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
+    ctx.options |= 0x4  # OP_LEGACY_SERVER_CONNECT
+    session = requests.session()
+    session.mount("https://", HttpAdapter(ctx))
+    return session
 
 
 @retry(
@@ -56,14 +59,14 @@ def buscar_dados_ibge(
     nivel_territorial: str,
     codigo_territorial: str,
 ) -> pd.DataFrame:
-    with enforce_timeout(3.0, 15.0):
-        return sidrapy.get_table(
-            table_code=tabela,
-            variable=variavel,
-            period=periodo,
-            territorial_level=nivel_territorial,
-            ibge_territorial_code=codigo_territorial,
-        )
+    """Busca dados da API do IBGE de forma segura, usando uma sessão HTTP própria."""
+    url = f"https://apisidra.ibge.gov.br/values/t/{tabela}/n{nivel_territorial}/{codigo_territorial}/p/{periodo}/v/{variavel}"
+
+    with get_legacy_session() as session:
+        response = session.get(url, timeout=(3.0, 15.0), verify=True)
+        response.raise_for_status()
+
+    return pd.DataFrame(response.json())
 
 
 def obter_dados_fallback(periodo: str = "last144") -> pd.DataFrame:
