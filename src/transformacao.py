@@ -80,12 +80,13 @@ def _limpar_e_converter_tipos(df: pd.DataFrame) -> pd.DataFrame:
         df["Inflacao_Mensal"].str.replace(",", ".", regex=False), errors="coerce"
     )
     # Se houver algum nulo na inflação, removemos a linha correspondente
-    if df["Inflacao_Mensal"].isnull().any():
-        nulos_count = df["Inflacao_Mensal"].isnull().sum()
+    inflacao_nula_mask = df["Inflacao_Mensal"].isnull()
+    if inflacao_nula_mask.any():
+        nulos_count = inflacao_nula_mask.sum()
         logger.warning(
             f"Encontrados {nulos_count} valores nulos na coluna Inflacao_Mensal. Removendo-os."
         )
-        df = df.dropna(subset=["Inflacao_Mensal"])
+        df = df[~inflacao_nula_mask]
 
     # Trata datas e anos
     df["Data"] = pd.to_datetime(df["Codigo_Mes"], format="%Y%m", errors="coerce")
