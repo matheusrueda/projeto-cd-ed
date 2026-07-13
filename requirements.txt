@@ -1,7 +1,7 @@
-pandas>=2.0.0
-sidrapy>=0.1.4
-streamlit>=1.30.0
-plotly>=5.18.0
-orjson>=3.9.0
+pandas==2.0.0
+sidrapy==0.1.4
+streamlit==1.30.0
+plotly==5.18.0
+orjson==3.9.0
 
-tenacity>=8.0.0
+tenacity==8.0.0
