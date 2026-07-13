@@ -9,6 +9,7 @@ import json
 import re
 import contextlib
 import functools
+from dataclasses import dataclass
 from tenacity import (
     retry,
     wait_exponential,
@@ -49,20 +50,24 @@ def enforce_timeout(connect_timeout: float = 3.0, read_timeout: float = 15.0):
     wait=wait_exponential(multiplier=1, min=2, max=30),
     stop=stop_after_attempt(3),
 )
-def buscar_dados_ibge(
-    tabela: str,
-    variavel: str,
-    periodo: str,
-    nivel_territorial: str,
-    codigo_territorial: str,
-) -> pd.DataFrame:
+
+@dataclass
+class IbgeQueryConfig:
+    tabela: str = "1737"
+    variavel: str = "63"
+    periodo: str = "last144"
+    nivel_territorial: str = "1"
+    codigo_territorial: str = "all"
+
+
+def buscar_dados_ibge(config: IbgeQueryConfig) -> pd.DataFrame:
     with enforce_timeout(3.0, 15.0):
         return sidrapy.get_table(
-            table_code=tabela,
-            variable=variavel,
-            period=periodo,
-            territorial_level=nivel_territorial,
-            ibge_territorial_code=codigo_territorial,
+            table_code=config.tabela,
+            variable=config.variavel,
+            period=config.periodo,
+            territorial_level=config.nivel_territorial,
+            ibge_territorial_code=config.codigo_territorial,
         )
 
 
@@ -116,22 +121,12 @@ def obter_dados_fallback(periodo: str = "last144") -> pd.DataFrame:
     return df
 
 
-def _executar_chamada_api_ibge(
-    tabela: str,
-    variavel: str,
-    periodo: str,
-    nivel_territorial: str,
-    codigo_territorial: str,
-) -> pd.DataFrame:
+def _executar_chamada_api_ibge(config: IbgeQueryConfig) -> pd.DataFrame:
     """
     Executa a chamada a API do IBGE e valida o retorno.
 
     Args:
-        tabela (str): Código da tabela.
-        variavel (str): Código da variável.
-        periodo (str): Período solicitado.
-        nivel_territorial (str): Nível territorial.
-        codigo_territorial (str): Código territorial.
+        config (IbgeQueryConfig): Configuração da chamada à API.
 
     Returns:
         pd.DataFrame: DataFrame com os dados brutos obtidos da API.
@@ -139,13 +134,7 @@ def _executar_chamada_api_ibge(
     Raises:
         ValueError: Se o retorno da API for nulo ou vazio.
     """
-    df_raw = buscar_dados_ibge(
-        tabela=tabela,
-        variavel=variavel,
-        periodo=periodo,
-        nivel_territorial=nivel_territorial,
-        codigo_territorial=codigo_territorial,
-    )
+    df_raw = buscar_dados_ibge(config)
 
     if df_raw is None or df_raw.empty:
         raise ValueError("A API do IBGE retornou um DataFrame vazio ou nulo.")
@@ -175,39 +164,26 @@ def _executar_com_fallback(
         return funcao_fallback()
 
 
-def extrair_dados_ipca(
-    tabela: str = "1737",
-    variavel: str = "63",
-    periodo: str = "last144",
-    nivel_territorial: str = "1",
-    codigo_territorial: str = "all",
-) -> pd.DataFrame:
+def extrair_dados_ipca(config: IbgeQueryConfig = None) -> pd.DataFrame:
     """
     Busca os dados brutos da inflação (IPCA) diretamente da API SIDRA do IBGE.
     Em caso de falha de conexão ou timeout, aciona automaticamente o fallback offline.
 
     Args:
-        tabela (str): O código da tabela no SIDRA (padrão: "1737").
-        variavel (str): A variável a ser extraída (padrão: "63").
-        periodo (str): O período a ser consultado (padrão: "last144").
-        nivel_territorial (str): Nível territorial (padrão: "1").
-        codigo_territorial (str): Código territorial (padrão: "all").
+        config (IbgeQueryConfig, opcional): Configuração da chamada à API. Se não fornecido, usa a configuração padrão.
 
     Returns:
         pd.DataFrame: DataFrame contendo a tabela bruta (via API ou via fallback).
     """
+    if config is None:
+        config = IbgeQueryConfig()
+
     logger.info(
-        f"Tentando extração da tabela {tabela}, variável {variavel} para o período {periodo}..."
+        f"Tentando extração da tabela {config.tabela}, variável {config.variavel} para o período {config.periodo}..."
     )
     return _executar_com_fallback(
-        funcao_principal=lambda: _executar_chamada_api_ibge(
-            tabela=tabela,
-            variavel=variavel,
-            periodo=periodo,
-            nivel_territorial=nivel_territorial,
-            codigo_territorial=codigo_territorial,
-        ),
-        funcao_fallback=lambda: obter_dados_fallback(periodo=periodo),
+        funcao_principal=lambda: _executar_chamada_api_ibge(config),
+        funcao_fallback=lambda: obter_dados_fallback(periodo=config.periodo),
         excecoes_esperadas=(
             requests.exceptions.RequestException,
             json.decoder.JSONDecodeError,
