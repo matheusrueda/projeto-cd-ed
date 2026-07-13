@@ -60,7 +60,7 @@ def test_filtrar_anos_completos(df_anos_completos):
 def test_calcular_resumo_anual():
     # Cria df com 1 ano completo com inflacao de 1% e outro de 2%
     anos = [2022] * 12 + [2023] * 12
-    codigos = [f"2022{str(i).zfill(2)}" for i in range(1, 13)] + [f"2023{str(i).zfill(2)}" for i in range(1, 13)]
+    codigos = ["202201", "202202", "202203", "202204", "202205", "202206", "202207", "202208", "202209", "202210", "202211", "202212"] + ["202301", "202302", "202303", "202304", "202305", "202306", "202307", "202308", "202309", "202310", "202311", "202312"]
     inflacoes = [1.0] * 12 + [2.0] * 12
 
     df = pd.DataFrame({
@@ -123,8 +123,8 @@ def test_processar_dados_ipca_integration(tmp_path):
     arquivo_limpo = tmp_path / "ipca_limpo.mock.csv"
 
     # Dados brutos para 2022 completo e 2023 completo
-    meses_2022 = [f"2022{str(i).zfill(2)}" for i in range(1, 13)]
-    meses_2023 = [f"2023{str(i).zfill(2)}" for i in range(1, 13)]
+    meses_2022 = ["202201", "202202", "202203", "202204", "202205", "202206", "202207", "202208", "202209", "202210", "202211", "202212"]
+    meses_2023 = ["202301", "202302", "202303", "202304", "202305", "202306", "202307", "202308", "202309", "202310", "202311", "202312"]
 
     codigos = [""] + meses_2022 + meses_2023
     valores = [""] + ["1,5"] * 12 + ["2,5"] * 12
