@@ -3,7 +3,9 @@ from typing import Callable, Any
 import os
 import logging
 import pandas as pd
+
 import requests
+import requests_cache
 import sidrapy
 import json
 import re
@@ -17,11 +19,19 @@ from tenacity import (
     RetryError,
 )
 
+
 # Configura o logging para acompanhamento do processo
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
 )
 logger = logging.getLogger(__name__)
+
+# Configura o cache globalmente para o requests, interceptando chamadas da API SIDRA
+requests_cache.install_cache(
+    cache_name='ibge_cache',
+    backend='sqlite',
+    expire_after=86400  # 24 hours TTL
+)
 
 
 @contextlib.contextmanager
