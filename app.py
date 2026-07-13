@@ -3,7 +3,6 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 
-
 # Constantes globais para otimização de performance
 VALORES_EXEMPLO = {
     "Customizado (R$ 100)": 100.0,
@@ -184,11 +183,12 @@ if df_ipca.empty:
 else:
     # Sidebar Acadêmica
     st.sidebar.markdown(
-        "## :blue[**Painel IPCA**]\n\n"
-        ":gray[Ciência de Dados & Estrutura de Dados]"
+        "## :blue[**Painel IPCA**]\n\n" ":gray[Ciência de Dados & Estrutura de Dados]"
     )
     st.sidebar.markdown("---")
-    st.sidebar.markdown(":gray[Este painel analisa a trajetória histórica da inflação oficial do país de forma interativa.]")
+    st.sidebar.markdown(
+        ":gray[Este painel analisa a trajetória histórica da inflação oficial do país de forma interativa.]"
+    )
 
     st.sidebar.markdown("### Filtros temporais")
     anos_disponiveis = df_ipca["Ano"].unique()
@@ -302,6 +302,27 @@ else:
         )
 
         with tab_graficos:
+
+            shared_layout = dict(
+                margin=dict(l=10, r=10, t=25, b=10),
+                paper_bgcolor="rgba(0,0,0,0)",
+                plot_bgcolor="rgba(0,0,0,0)",
+                font=dict(family="Plus Jakarta Sans", color="#94a3b8"),
+                xaxis=dict(
+                    type="category",
+                    showgrid=False,
+                    linecolor="rgba(255,255,255,0.08)",
+                ),
+                yaxis=dict(
+                    showgrid=True,
+                    gridcolor="rgba(255,255,255,0.04)",
+                    zeroline=True,
+                    zerolinecolor="rgba(255,255,255,0.08)",
+                    linecolor="rgba(255,255,255,0.08)",
+                ),
+                height=380,
+            )
+
             # Gráficos em duas colunas
             g_col1, g_col2 = st.columns(2)
 
@@ -327,23 +348,7 @@ else:
                     hovertemplate="<b>Ano:</b> %{x}<br><b>Inflação Acumulada:</b> %{y:.2f}%<extra></extra>",
                 )
                 fig_bar.update_layout(
-                    margin=dict(l=10, r=10, t=25, b=10),
-                    paper_bgcolor="rgba(0,0,0,0)",
-                    plot_bgcolor="rgba(0,0,0,0)",
-                    font=dict(family="Plus Jakarta Sans", color="#94a3b8"),
-                    xaxis=dict(
-                        type="category",
-                        showgrid=False,
-                        linecolor="rgba(255,255,255,0.08)",
-                    ),
-                    yaxis=dict(
-                        showgrid=True,
-                        gridcolor="rgba(255,255,255,0.04)",
-                        zeroline=True,
-                        zerolinecolor="rgba(255,255,255,0.08)",
-                        linecolor="rgba(255,255,255,0.08)",
-                    ),
-                    height=380,
+                    **shared_layout,
                     hovermode="x",
                 )
                 st.plotly_chart(
@@ -382,7 +387,8 @@ else:
                         x=df_filtrado["Ano"],
                         y=df_filtrado["Trajetoria_Composta"],
                         mode="markers+text",
-                        text=df_filtrado["Trajetoria_Composta"].round(1).astype(str) + "%",
+                        text=df_filtrado["Trajetoria_Composta"].round(1).astype(str)
+                        + "%",
                         textposition="top center",
                         marker=dict(color="#db2777", size=8),
                         hoverinfo="skip",
@@ -391,23 +397,7 @@ else:
                 )
 
                 fig_line.update_layout(
-                    margin=dict(l=10, r=10, t=25, b=10),
-                    paper_bgcolor="rgba(0,0,0,0)",
-                    plot_bgcolor="rgba(0,0,0,0)",
-                    font=dict(family="Plus Jakarta Sans", color="#94a3b8"),
-                    xaxis=dict(
-                        type="category",
-                        showgrid=False,
-                        linecolor="rgba(255,255,255,0.08)",
-                    ),
-                    yaxis=dict(
-                        showgrid=True,
-                        gridcolor="rgba(255,255,255,0.04)",
-                        zeroline=True,
-                        zerolinecolor="rgba(255,255,255,0.08)",
-                        linecolor="rgba(255,255,255,0.08)",
-                    ),
-                    height=380,
+                    **shared_layout,
                 )
                 st.plotly_chart(
                     fig_line, width="stretch", config={"displayModeBar": False}
